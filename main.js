@@ -1,22 +1,27 @@
-// variables
+// Variables
 let pointers = [] // { x: '?', y: '?' } 
 
+// Trained layer and bias
 let m, b;
 
 // Optimazer and learning rate
 const learningRate = 0.01;
 const optimizer = tf.train.sgd(learningRate);
 
+/**
+ * P5.js Main sketch configuration
+ */
 function setup () {
-  createCanvas(500, 400)
+  // custom size canvas
+  createCanvas(800, 800)
 
   // initialize m and b
   m = tf.variable(
-    tf.scalar(random(1))
+    tf.scalar(random(1)) // generate start point
   )
 
   b = tf.variable(
-    tf.scalar(random(1))
+    tf.scalar(random(1)) // randomize bias
   )
 }
 
@@ -33,38 +38,43 @@ function mousePressed() {
   )
 }
 
+/**
+ * Main loop drawing
+ */
 function draw () {
-  background(0)
+  background('black') // Fill screen color
 
-  if (pointers.length > 0) {
+  if (pointers.length > 0) { // Dataset validator
 
     tf.tidy(() => { // Clean memory
-      // generate Y pointer tensor
-      const ys = tf.tensor1d(
-        pointers.map(point => point.y)
-      )
+      
+      const listY = pointers.map(point => point.y)
+      const listX = pointers.map(point => point.x)
 
-      // update Network
-      optimizer.minimize(() => loss(networkOut(
-        pointers.map(point => point.x)
-      ), ys))
+      const ys = tf.tensor1d(listY) // Generate Y pointer tensor
+
+      // Update Network
+      optimizer.minimize(() => loss(
+        networkOut(listX), // Network output tensor
+        ys //
+      ))
     })
 
   }
 
   for (let i = 0; i < pointers.length; i++) {
-    // show points
+    // Show points
     pointers[i].showInFrame()
   }
 
-  // generate line
+  // Generate line
   const lineXs = [0,1]
   const tensorYs = tf.tidy(() => networkOut(lineXs)) // Clean up memory
 
   let x1 = map(lineXs[0], 0, 1, 0, width) // begin point X line
   let x2 = map(lineXs[1], 0, 1, 0, width) // end point X line
 
-  // convert tensor to Array
+  // Convert tensor to Array
   let lineYs = tensorYs.dataSync()
   
   tensorYs.dispose() // Clean up memory
@@ -72,9 +82,11 @@ function draw () {
   let y1 = map(lineYs[0], 0, 1, height, 0) // begin point Y line
   let y2 = map(lineYs[1], 0, 1, height, 0) // end point Y line
 
-  stroke('blue')
-  strokeWeight(5)
-  // draw line
+  // Colors
+  stroke('#6223A0')
+  strokeWeight(2)
+  
+  // Draw line
   line(x1, y1, x2, y2)
   noStroke()
 }
@@ -92,7 +104,11 @@ function networkOut (vector) {
   return ys
 }
 
-// y = a * x^2 + b * x + c.
+/**
+ * Ajust network value
+ * @param {Tensor} pred Prediction Network output
+ * @param {Tensor} label Training value output
+ */
 function loss (pred, label) {
   return pred.sub(label).square().mean()
 }
