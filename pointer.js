@@ -1,3 +1,9 @@
+/**
+ * Point object
+ * @author Elihu A. Cruz <elihuacruz@gmail.com>
+ * @version 0.1.1
+ */
+
 class Pointer {
   /**
    * Initialize enviroment
