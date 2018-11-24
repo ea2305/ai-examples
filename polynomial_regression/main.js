@@ -83,7 +83,7 @@ function draw () {
 
   // Generate line
   let curveX = []
-  for (let i = 0; i <= 1; i += 0.1)
+  for (let i = 0; i <= 1; i += 0.01)
     curveX.push(i)
 
   const tensorYs = tf.tidy(() => networkOut(curveX)) // Clean up memory
