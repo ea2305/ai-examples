@@ -1,13 +1,25 @@
-# AI Examples - Linear regression with TensorFlow.js & P5 🎆
+# AI Examples 📗
+
+AI examples build with p5 and TensorFlow.js
+
+## Linear regression 
 
 Basic implementation of Linear regression with neural network.
 Representation and training with mouse click as a dataset input
 
 <img src="./assets/screen.png"/>
 
+## Polynomial regression 
+
+Polynomial regression with neural network.
+Representation and training with mouse click as a dataset input
+
+<img src="./assets/screen_poly.png"/>
+
+
 ### How to use it?
 
-* Open index.html
+* Open <example>/index.html
 * Enjoy and play ;)
 
 ### LICENSE
